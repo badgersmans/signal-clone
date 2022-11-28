@@ -1,5 +1,5 @@
 import { View, Text, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native'
-import React, { useLayoutEffect } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import CustomListItem from '../components/CustomListItem'
 import { useNavigation } from '@react-navigation/native'
 import tw from 'twrnc'
@@ -9,6 +9,9 @@ import { AntDesign, SimpleLineIcons } from '@expo/vector-icons'
 
 const HomeScreen = () => {
 
+  const [chats, setChats] = useState([])
+  const navigation = useNavigation();
+
   const signOut = () => {
     auth.signOut()
     .then(() => {
@@ -16,7 +19,15 @@ const HomeScreen = () => {
     })
   }
 
-  const navigation = useNavigation();
+  useEffect(() => db.collection('chats')
+    .onSnapshot(snapshot => {
+      setChats(snapshot.docs.map(doc => ({
+        id: doc.id,
+        data: doc.data()
+      })))
+    })
+  , [])
+  
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -66,10 +77,24 @@ const HomeScreen = () => {
     })
   }, [navigation])
 
+  const enterChat = (id, chatName) => {
+    navigation.navigate('Chat', {
+      id,
+      chatName
+    })
+  }
+
   return (
     <SafeAreaView>
-      <ScrollView>
-        <CustomListItem />
+      <ScrollView style={tw`h-full`}>
+        {chats.map(({id, data: { chatName }}) => (
+          <CustomListItem 
+            key={id}
+            id={id}
+            chatName={chatName}
+            enterChat={enterChat}
+          />
+        ))}
       </ScrollView>
     </SafeAreaView>
   )

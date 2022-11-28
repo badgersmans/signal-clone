@@ -4,8 +4,13 @@ import tw from 'twrnc'
 import { ListItem, Avatar } from '@rneui/themed'
 
 const CustomListItem = ({ id, chatName, enterChat }) => {
+
   return (
-    <ListItem>
+    <ListItem 
+        key={id} 
+        bottomDivider
+        onPress={() => enterChat(id, chatName)}
+     >
       <Avatar 
         source={{
             uri: 'https://via.placeholder.com/150'
@@ -15,11 +20,11 @@ const CustomListItem = ({ id, chatName, enterChat }) => {
 
       <ListItem.Content>
         <ListItem.Title style={tw`font-extrabold`}>
-            <Text>Chat...</Text>
+            <Text>{chatName}</Text>
         </ListItem.Title>
     
         <ListItem.Subtitle numberOfLines={1} ellipsizeMode='tail'>
-            <Text>Chfgregegegergergegegeegegegeeggeat...</Text>
+            <Text>kkk</Text>
         </ListItem.Subtitle>
       </ListItem.Content>
     </ListItem>

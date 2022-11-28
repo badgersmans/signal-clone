@@ -29,7 +29,7 @@ const AddChatScreen = () => {
   }, [navigation])
 
   return (
-    <View style={tw``}>
+    <View style={tw`h-100 p-5 bg-white`}>
       <Input 
         placeholder='Enter a chat name'
         value={input}
@@ -42,6 +42,7 @@ const AddChatScreen = () => {
             color='black'
           />
         }
+        onSubmitEditing={createChat}
       />
         <Button 
           onPress={createChat}
