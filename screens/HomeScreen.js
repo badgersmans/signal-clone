@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 import tw from 'twrnc'
 import { Avatar } from '@rneui/themed'
 import { auth, db } from '../firebase'
+import { AntDesign, SimpleLineIcons } from '@expo/vector-icons'
 
 const HomeScreen = () => {
 
@@ -37,9 +38,33 @@ const HomeScreen = () => {
             />
           </TouchableOpacity>
         </View>
+      ),
+      headerRight: () => (
+        <View style={tw`flex-row justify-between mr-6 w-16`}>
+          <TouchableOpacity
+            activeOpacity={0.5}
+          >
+            <AntDesign name='camerao'
+              size={24}
+              color='black'
+            />
+            
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() => navigation.navigate('AddChat')}
+          >
+            <SimpleLineIcons name='pencil'
+              size={24}
+              color='black'
+            />
+
+          </TouchableOpacity>
+        </View>
       )
     })
-  }, [])
+  }, [navigation])
 
   return (
     <SafeAreaView>
