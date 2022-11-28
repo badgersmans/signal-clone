@@ -15,14 +15,12 @@ const LoginScreen = () => {
   // const [email, setEmail] = useState('')
 
   const signIn = () => {
-    
-  }
-
-  const signUp = () => {
-
+    auth.signInWithEmailAndPassword(email, password)
+    .catch(error => alert(error))
   }
 
   useEffect(() => auth.onAuthStateChanged((authUser) => {
+    // console.log(authUser);
       if(authUser) {
         navigation.replace('Home')
       }
@@ -58,6 +56,7 @@ const LoginScreen = () => {
           secureTextEntry
           value={password}
           onChangeText={text => setPassword(text)}
+          onSubmitEditing={signIn}
         />
 
         <Button 
