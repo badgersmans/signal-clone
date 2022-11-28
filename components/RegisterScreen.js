@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import tw from 'twrnc'
 import { Button, Input, Text } from '@rneui/themed'
 import { StatusBar } from 'expo-status-bar'
+import { auth } from '../firebase'
 
 const RegisterScreen = () => {
 
@@ -12,7 +13,13 @@ const RegisterScreen = () => {
     const [imageURL, setImageURL] = useState('')
 
     const signUp = () => {
-        console.log('register.....')
+        auth.createUserWithEmailAndPassword(email, password)
+        .then(authUser => {
+            authUser.user.updateProfile({
+                displayName: name,
+                photoURL: imageURL || 'https://via.placeholder.com/150'
+            })
+        }).catch(error => alert(error.message))
     }
 
   return (

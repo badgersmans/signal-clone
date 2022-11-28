@@ -1,9 +1,10 @@
 import { View, Text, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Input, Image } from '@rneui/themed'
 import { StatusBar } from 'expo-status-bar'
 import tw from 'twrnc'
 import { useNavigation } from '@react-navigation/native'
+import { auth } from '../firebase'
 
 
 const LoginScreen = () => {
@@ -21,6 +22,12 @@ const LoginScreen = () => {
 
   }
 
+  useEffect(() => auth.onAuthStateChanged((authUser) => {
+      if(authUser) {
+        navigation.replace('Home')
+      }
+    }), [])
+
   return (
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -33,7 +40,7 @@ const LoginScreen = () => {
         source={{
           uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Signal-Logo.svg/600px-Signal-Logo.svg.png'
         }}
-        style={tw`h-28 w-28 m-2 object-contain rounded-md`}
+        style={tw`h-28 w-28 m-2 rounded-md`}
       />
 
       <View style={styles.inputContainer}>
