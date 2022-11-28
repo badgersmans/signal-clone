@@ -73,8 +73,7 @@ const LoginScreen = () => {
           title='Register' 
           containerStyle={styles.button} 
           type='outline' 
-          onPress={signUp}
-          onPressIn={() => navigation.navigate('Register')}
+          onPress={() => navigation.navigate('Register')}
         />
       </View>
 

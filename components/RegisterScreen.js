@@ -19,6 +19,7 @@ const RegisterScreen = () => {
                 displayName: name,
                 photoURL: imageURL || 'https://via.placeholder.com/150'
             })
+            // alert('success')
         }).catch(error => alert(error.message))
     }
 
