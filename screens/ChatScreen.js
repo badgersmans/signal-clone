@@ -49,7 +49,7 @@ const ChatScreen = () => {
                     <Avatar 
                         rounded
                         source={{
-                            uri: 'https://via.placeholder.com/150'
+                            uri:  messages[0]?.data.photoURL || 'https://via.placeholder.com/150'
                         }}
                     />
                     <Text style={tw`text-white ml-2 font-bold`}>{ route.params.chatName }</Text>
@@ -95,7 +95,7 @@ const ChatScreen = () => {
                     
             )
         })
-    }, [])
+    }, [navigation, messages])
 
     useLayoutEffect(() => db
     .collection('chats')
@@ -120,34 +120,54 @@ const ChatScreen = () => {
 
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <>
-                    <ScrollView>
+                    <ScrollView contentContainerStyle={{ paddingTop: 15 }}>
                         { 
                             messages.map(({id, data}) => (
                                 data.email === auth.currentUser.email
                                 ? (
                                     <View key={id} style={styles.senderContainer}>
-                                        <Avatar 
-                                           style={tw`bg-red-500`} 
+                                        <Avatar
+                                            source={{
+                                                uri: data.photoURL
+                                            }} 
+                                            rounded
+                                            size={30}
+                                            position='absolute'
+                                            bottom={-15}
+                                            right={-5}
+                                            
+                                            // WEB
+                                            containerStyle={{
+                                                position: 'absolute',
+                                                bottom: -15,
+                                                right: -5,
+                                            }}
                                         />
 
-                                        <Text
-                                            style={styles.senderText}
-                                        >
-                                            {data.message}
-                                        </Text>
+                                        <Text style={styles.senderText}>{data.message}</Text>
                                     </View>
                                 )
                                 : (
                                     <View key={id} style={styles.receiverContainer}>
-                                        <Avatar 
+                                        <Avatar
+                                            source={{
+                                                uri: data.photoURL
+                                            }} 
+                                            rounded
+                                            size={30}
+                                            position='absolute'
+                                            bottom={-15}
+                                            left={-5}
                                             
+                                            // WEB
+                                            containerStyle={{
+                                                position: 'absolute',
+                                                bottom: -15,
+                                                left: -5,
+                                            }}
                                         />
-
-                                    <Text
-                                        style={styles.receiverText}
-                                    >
-                                        {data.message}
-                                    </Text>
+                                <Text style={styles.receiverText}>{data.message}</Text>
+                                <Text style={styles.receiverName}>{data.displayName}</Text>
                                 </View>
                                 )
                             )) 
@@ -162,6 +182,9 @@ const ChatScreen = () => {
                             value={input}
                             onChangeText={text => setInput(text)}
                             onSubmitEditing={sendMessage}
+                            autoCapitalize={'none'}
+                            autoComplete={false}
+                            autoCorrect={false}
                         />
 
                         <TouchableOpacity 
@@ -206,14 +229,34 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         marginTop: 20,
         maxWidth: '80%',
-        position: 'relative'
+        position: 'relative',
+        // flexDirection: 'row'
+    },
+    receiverName: {
+        left: 10,
+        paddingRight: 10,
+        fontSize: 10,
+        color: 'white'
+    },
+    senderText: {
+        // color: 'white',
+        fontWeight: '500',
+        marginLeft: 10,
+        marginBottom: 15
+    },
+    receiverText: {
+        color: 'white',
+        fontWeight: '500',
+        marginLeft: 10,
+        marginBottom: 15
     },
     receiverContainer: {
         padding: 15,
         backgroundColor: '#3976f0',
         alignSelf: 'flex-start',
         borderRadius: 20,
-        margin: 15,
+        marginLeft: 15,
+        marginBottom: 20,
         maxWidth: '80%',
         position: 'relative'
     },
