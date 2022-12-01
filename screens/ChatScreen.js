@@ -19,6 +19,7 @@ import { AntDesign, FontAwesome, Ionicons } from '@expo/vector-icons'
 import { StatusBar } from 'expo-status-bar';
 import { db, auth } from '../firebase';
 import * as firebase from 'firebase';
+import isEmptyOrSpaces from '../lib/isEmptyOrSpaces';
 
 const ChatScreen = () => {
 
@@ -180,8 +181,10 @@ const ChatScreen = () => {
                             placeholder='Send a Signal Message'
                             style={styles.input}
                             value={input}
-                            onChangeText={text => setInput(text)}
-                            onSubmitEditing={sendMessage}
+                            onChangeText={text => isEmptyOrSpaces(text) ? setInput('') : setInput(text)}
+                            onSubmitEditing={() =>
+                                !isEmptyOrSpaces(input) && sendMessage
+                              }
                             autoCapitalize={'none'}
                             autoComplete={false}
                             autoCorrect={false}
@@ -191,11 +194,12 @@ const ChatScreen = () => {
                             activeOpacity={0.5}
                             onPress={sendMessage}
                             style={{ marginRight: 10 }}
+                            disabled={!input}
                         >
                             <Ionicons 
                                 name='send'
                                 size={24}
-                                color='#3976f0'
+                                color= {!input ? 'grey' : '#3976f0'} 
                             />
                         </TouchableOpacity>
                     </View>
